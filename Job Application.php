@@ -68,10 +68,16 @@
     <?php 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+            //-- Check if $_POST["name"] exists and is not empty before proceeeding..
+            //-- e.g if(isset($_POST["name"]) && !empty($_POST["name"])
+
             $targetFilePath = "uploads/" . basename($_Files["passport"]["name"]);
             move_uploaded_file($_FILES["passport"]
             ["tmp_name"], $targetFilePath);
 
+            
+            //-- Unsafe: escape POST variables before writing to DB or file.
+            //-- Someone can enter and executable command as their name and it will find its way into a file on your server!
             $user_1 = $_POST["name"] . " . " . $_POST["email"] . " . " . $_POST["number"] . " . " . $_POST["address"] . " . " . $_POST["date"] . " . " . $_FILES["passport"]["name"] . " . " . $_POST["letter"] . "/n";
 
             $newFile = fopen("newFile.txt", "a");
